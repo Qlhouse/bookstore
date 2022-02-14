@@ -1,0 +1,6 @@
+萤石云视频网址：
+rtsp://admin:UDSEJF@192.168.1.8:554/h264/ch1/main/av_stream
+
+ipcam，视频访问地址
+http://192.168.1.156:8080/video
+
