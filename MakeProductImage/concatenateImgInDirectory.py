@@ -27,6 +27,8 @@ for files in img_type:
 img_grabbed.sort(key=os.path.getctime)
 
 # concatenate imgs
+
+
 def vconcat_resize_min(im_list, interpolation=cv2.INTER_CUBIC):
     w_min = min(im.shape[1] for im in im_list)
     im_list_resize = [
