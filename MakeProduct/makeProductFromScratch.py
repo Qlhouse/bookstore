@@ -1,35 +1,27 @@
-"""
-Design:
-  + Product Detail Window 
-    Write down product detail, create directory with product ISBN, dump product 
-    details a json file, file name: 'productDetail.json'.
-  + Move Images Window
-"""
 import tkinter as tk
 from tkinter import ttk
+import os
+from tkinter.filedialog import askdirectory
 
 
-class ProductDetail(tk.Toplevel):
-    def __init__(self, parent):
-        super().__init__(parent)
+class MakeProduct:
+    def __init__(self, root):
+        self.root = root
+        self.environment_setup()
 
-        self.geometry('800x700')
-        self.title('Product Detail Window')
-        self.configure(bg="#ffbf00")
-        self.rowconfigure
+    def environment_setup(self):
+        tk.Button(self.root, text="文件目录设置", command=self.initialize_directory_environment,
+                  bg="blue", fg="white").grid(row=1, column=1, sticky=tk.E, padx=5, pady=5)
 
-    # Place Button
-    def generate_product(self):
-        ttk.Button(self, text="生成商品", command=self.make_product)
-
-    def make_product(self):
-        window = ProductDetail(self)
-        window.grab_Set()
+    def initialize_directory_environment(self):
+        self.productRootDir = askdirectory()
 
 
-class App(tk.Tk):
-    def __init__(self):
-        super().__init__()
-
-        self.geometry('800x900')
-        self.title('Main Window')
+if __name__ == '__main__':
+    root = tk.Tk()
+    # print(os.getcwd())
+    root.title('Make Products')
+    root.geometry("800x600")
+    root.resizable(width=False, height=False)
+    application = MakeProduct(root)
+    root.mainloop()
