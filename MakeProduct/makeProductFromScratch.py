@@ -6,7 +6,7 @@ from tkinter.filedialog import askdirectory
 
 class MainPage:
     def __init__(self, root):
-        self.root = root
+        # self.root = root
         # [TO DO] 生成配置文件，如果配置文件已存在，不用重复生成配置文件
         self.config = {}
         self.environment_setup()
@@ -36,7 +36,7 @@ class MainPage:
 
     def product_detail_frame(self):
         self.labelframe = tk.LabelFrame(
-            self.root, text='商品信息', bg="sky blue", font='helvetica 14', padx=20, pady=20)
+            root, text='商品信息', bg="sky blue", font='helvetica 14', padx=20, pady=20)
         self.labelframe.grid(row=2, column=1, padx=20, pady=20, sticky='ew')
 
         tk.Label(self.labelframe, text='商品名称:', bg='green', fg='white').grid(
@@ -113,7 +113,7 @@ class MainPage:
 
     def command_frame(self):
         self.command_frame = tk.LabelFrame(
-            self.root, text='功能按钮', bg="sky blue", font='helvetica 14 bold')
+            root, text='功能按钮', bg="sky blue", font='helvetica 14 bold')
         self.command_frame.grid(row=3, column=1, padx=30, pady=30, sticky='ew')
 
         tk.Button(self.command_frame, text="生成产品数据", command="", bg="green", fg='white').grid(
@@ -135,7 +135,7 @@ class MainPage:
     def replaceText(self):
         entryList = [self.name, self.subName,
                      self.printerName, self.keyword]
-        org_chars, sub_chars = Replace_Dialogue_Window(self.root)
+        org_chars, sub_chars = Replace_Dialogue_Window(root).get_inputs()
         print(org_chars, sub_chars)
 
         for item in entryList:
@@ -161,11 +161,11 @@ class MainPage:
 class Replace_Dialogue_Window:
 
     def __init__(self, root):
-        self.root = root
+        # self.root = root
         self.create_gui()
 
     def create_gui(self):
-        self.replace_dialog = tk.Toplevel(self.root)
+        self.replace_dialog = tk.Toplevel(root)
 
         tk.Label(self.replace_dialog, text='查找:', bg='green', fg='white').grid(
             row=1, column=1, sticky=tk.W, padx=15, pady=15)
@@ -179,16 +179,16 @@ class Replace_Dialogue_Window:
         tk.Entry(self.replace_dialog, textvariable=self.subtituted_chars, width=30).grid(
             row=2, column=2, sticky=tk.W, padx=5, pady=15)
 
-        tk.Button(self.replace_dialog, text="提交", command=self.commit,
+        tk.Button(self.replace_dialog, text="提交", command=self.replace_dialog.destroy,
                   bg="green", fg='white').grid(row=3, padx=5, pady=5)
 
         self.replace_dialog.mainloop()
 
-    def commit(self):
+    def get_inputs(self):
+        self.replace_dialog.deiconify()
+        self.replace_dialog.wait_window()
         org_chars = self.original_chars.get()
         sub_chars = self.subtituted_chars.get()
-        print(org_chars, sub_chars)
-        self.replace_dialog.destroy()
         return org_chars, sub_chars
 
 
