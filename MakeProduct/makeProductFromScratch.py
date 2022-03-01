@@ -10,17 +10,11 @@ class MainPage:
         # [TO DO] 生成配置文件，如果配置文件已存在，不用重复生成配置文件
         self.config = {}
         self.environment_setup()
-        self.product_detail_frame()
-        self.btn_replace()
-        self.btn_clear_form()
-        self.operation_frame()
-        self.btn_make_product()
-        self.btn_take_picture()
-        self.btn_move_gallery_img()
-        self.btn_move_detial_img()
+        self.create_gui()
 
     def create_gui(self):
-        pass
+        self.product_detail_frame()
+        self.command_frame()
 
     def environment_setup(self):
         """
@@ -111,49 +105,43 @@ class MainPage:
         tk.Entry(self.labelframe, textvariable=self.keyword, width=50).grid(
             row=11, column=2, sticky=tk.W, padx=5, pady=7)
 
-    def btn_replace(self):
         tk.Button(self.labelframe, text="替换", command=self.replaceText,
                   bg="green", fg='white').grid(row=13, column=1, padx=5, pady=5)
 
+        tk.Button(self.labelframe, text="清除表格", command=self.clear_form,
+                  bg="green", fg='white').grid(row=13, column=2, padx=5, pady=5)
+
+    def command_frame(self):
+        self.command_frame = tk.LabelFrame(
+            self.root, text='功能按钮', bg="sky blue", font='helvetica 14 bold')
+        self.command_frame.grid(row=3, column=1, padx=30, pady=30, sticky='ew')
+
+        tk.Button(self.command_frame, text="生成产品数据", command="", bg="green", fg='white').grid(
+            row=1, column=1, padx=20, pady=20
+        )
+
+        tk.Button(self.command_frame, text="拍照片", command="", bg="green", fg='white').grid(
+            row=1, column=2, padx=20, pady=20
+        )
+
+        tk.Button(self.command_frame, text="移动简介图", command="", bg="green", fg='white').grid(
+            row=1, column=3, padx=20, pady=20
+        )
+
+        tk.Button(self.command_frame, text="移动详情图", command="", bg="green", fg='white').grid(
+            row=1, column=4, padx=20, pady=20
+        )
+
     def replaceText(self):
-        replace_dialog = tk.Toplevel(self.root)
+        entryList = [self.name, self.subName,
+                     self.printerName, self.keyword]
+        org_chars, sub_chars = Replace_Dialogue_Window()
 
-        tk.Label(replace_dialog, text='查找:', bg='green', fg='white').grid(
-            row=1, column=1, sticky=tk.W, padx=15, pady=15)
-        original_chars = tk.StringVar()
-        tk.Entry(replace_dialog, textvariable=original_chars, width=30).grid(
-            row=1, column=2, sticky=tk.W, padx=5, pady=15)
-
-        tk.Label(replace_dialog, text='替换:', bg='green', fg='white').grid(
-            row=2, column=1, sticky=tk.W, padx=15, pady=15)
-        subtituted_chars = tk.StringVar()
-        tk.Entry(replace_dialog, textvariable=subtituted_chars, width=30).grid(
-            row=2, column=2, sticky=tk.W, padx=5, pady=15)
-
-        def replaceFunc(item):
-            org_chars = original_chars.get()
-            sub_chars = subtituted_chars.get()
+        for item in entryList:
             text = item.get()
-
             if org_chars in text:
                 new_text = text.replace(org_chars, sub_chars)
                 item.set(new_text)
-
-        def commit():
-            entryList = [self.name, self.subName,
-                         self.printerName, self.keyword]
-
-            for item in entryList:
-                replaceFunc(item)
-
-            replace_dialog.destroy()
-
-        tk.Button(replace_dialog, text="提交", command=lambda: commit(),
-                  bg="green", fg='white').grid(row=3, padx=5, pady=5)
-
-    def btn_clear_form(self):
-        tk.Button(self.labelframe, text="清除表格", command=self.clear_form,
-                  bg="green", fg='white').grid(row=13, column=2, padx=5, pady=5)
 
     def clear_form(self):
         entry_list = [self.name, self.classification, self.subName, self.code, self.barcode,
@@ -164,34 +152,39 @@ class MainPage:
 
     # [TO DO] Drop down list for 商品分类
 
-    def operation_frame(self):
-        self.command_frame = tk.LabelFrame(
-            self.root, text='功能按钮', bg="sky blue", font='helvetica 14 bold')
-        self.command_frame.grid(row=3, column=1, padx=30, pady=30, sticky='ew')
+    def make_product():
+        "Dump 'productDetail.json' "
+        pass
 
-    def btn_make_product(self):
-        tk.Button(self.command_frame, text="生成产品数据", command="", bg="green", fg='white').grid(
-            row=1, column=1, padx=20, pady=20
-        )
 
-        def make_product():
-            "Dump 'productDetail.json' "
-            pass
+class Replace_Dialogue_Window:
 
-    def btn_take_picture(self):
-        tk.Button(self.command_frame, text="拍照片", command="", bg="green", fg='white').grid(
-            row=1, column=2, padx=20, pady=20
-        )
+    def __init__(self):
+        self.create_gui()
 
-    def btn_move_gallery_img(self):
-        tk.Button(self.command_frame, text="移动简介图", command="", bg="green", fg='white').grid(
-            row=1, column=3, padx=20, pady=20
-        )
+    def create_gui(self):
+        self.replace_dialog = tk.Toplevel()
 
-    def btn_move_detial_img(self):
-        tk.Button(self.command_frame, text="移动详情图", command="", bg="green", fg='white').grid(
-            row=1, column=4, padx=20, pady=20
-        )
+        tk.Label(self.replace_dialog, text='查找:', bg='green', fg='white').grid(
+            row=1, column=1, sticky=tk.W, padx=15, pady=15)
+        self.original_chars = tk.StringVar()
+        tk.Entry(self.replace_dialog, textvariable=self.original_chars, width=30).grid(
+            row=1, column=2, sticky=tk.W, padx=5, pady=15)
+
+        tk.Label(self.replace_dialog, text='替换:', bg='green', fg='white').grid(
+            row=2, column=1, sticky=tk.W, padx=15, pady=15)
+        self.subtituted_chars = tk.StringVar()
+        tk.Entry(self.replace_dialog, textvariable=self.subtituted_chars, width=30).grid(
+            row=2, column=2, sticky=tk.W, padx=5, pady=15)
+
+        tk.Button(self.replace_dialog, text="提交", command=self.commit,
+                  bg="green", fg='white').grid(row=3, padx=5, pady=5)
+
+    def commit(self):
+        org_chars = self.original_chars.get()
+        sub_chars = self.subtituted_chars.get()
+        self.replace_dialog.destroy()
+        return org_chars, sub_chars
 
 
 if __name__ == '__main__':
@@ -201,10 +194,6 @@ if __name__ == '__main__':
     root.title('Make Products')
     root.geometry("600x820")
     # root.resizable(width=False, height=False)
-    application = MakeProduct(root)
+    application = MainPage(root)
+    # Replace_Dialogue_Window(root)
     root.mainloop()
-
-
-class PopupWindow:
-    def __init__(self, root):
-        pass
