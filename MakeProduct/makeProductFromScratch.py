@@ -135,7 +135,8 @@ class MainPage:
     def replaceText(self):
         entryList = [self.name, self.subName,
                      self.printerName, self.keyword]
-        org_chars, sub_chars = Replace_Dialogue_Window()
+        org_chars, sub_chars = Replace_Dialogue_Window(self.root)
+        print(org_chars, sub_chars)
 
         for item in entryList:
             text = item.get()
@@ -159,30 +160,34 @@ class MainPage:
 
 class Replace_Dialogue_Window:
 
-    def __init__(self):
+    def __init__(self, root):
+        self.root = root
         self.create_gui()
 
     def create_gui(self):
-        self.replace_dialog = tk.Toplevel()
+        self.replace_dialog = tk.Toplevel(self.root)
 
         tk.Label(self.replace_dialog, text='查找:', bg='green', fg='white').grid(
             row=1, column=1, sticky=tk.W, padx=15, pady=15)
-        self.original_chars = tk.StringVar()
+        self.original_chars = tk.StringVar(self.replace_dialog)
         tk.Entry(self.replace_dialog, textvariable=self.original_chars, width=30).grid(
             row=1, column=2, sticky=tk.W, padx=5, pady=15)
 
         tk.Label(self.replace_dialog, text='替换:', bg='green', fg='white').grid(
             row=2, column=1, sticky=tk.W, padx=15, pady=15)
-        self.subtituted_chars = tk.StringVar()
+        self.subtituted_chars = tk.StringVar(self.replace_dialog)
         tk.Entry(self.replace_dialog, textvariable=self.subtituted_chars, width=30).grid(
             row=2, column=2, sticky=tk.W, padx=5, pady=15)
 
         tk.Button(self.replace_dialog, text="提交", command=self.commit,
                   bg="green", fg='white').grid(row=3, padx=5, pady=5)
 
+        self.replace_dialog.mainloop()
+
     def commit(self):
         org_chars = self.original_chars.get()
         sub_chars = self.subtituted_chars.get()
+        print(org_chars, sub_chars)
         self.replace_dialog.destroy()
         return org_chars, sub_chars
 
