@@ -28,9 +28,9 @@ class MainPage:
                 # print(config['rootDir'])
                 self.rootDir = self.config['rootDir']
         else:
-            self.productRootDir = askdirectory()
-            self.config['rootDir'] = self.productRootDir
-            print(self.config)
+            self.rootDir = askdirectory()
+            self.config['rootDir'] = self.rootDir
+            # print(self.config)
             with open(config_file, 'w') as fh:
                 json.dump(self.config, fh)
 
@@ -116,7 +116,7 @@ class MainPage:
             root, text='功能按钮', bg="sky blue", font='helvetica 14 bold')
         self.command_frame.grid(row=3, column=1, padx=30, pady=30, sticky='ew')
 
-        tk.Button(self.command_frame, text="生成产品数据", command=self.make_product(), bg="green", fg='white').grid(
+        tk.Button(self.command_frame, text="生成产品数据", command=self.make_product, bg="green", fg='white').grid(
             row=1, column=1, padx=20, pady=20
         )
 
@@ -156,19 +156,23 @@ class MainPage:
 
     def make_product(self):
         "Dump 'productDetail.json' "
-        f'''{
-            "商品名称": {self.name},
-            "商品副标题": {self.subname},
-            "商品短标题": {self.printerName},
-            "单位": {self.unit},
-            "关键字": {self.keyword},
-            "商品分类": {self.classification},
-            "售价": {self.price},
-            "原价": {self.originalPrice},
-            "编码": {self.code}, 
-            "条码": {self.barcode},
-            "库存": {self.stock}
-        }'''
+        product_detail = {
+            "商品名称": self.name.get(),
+            "商品副标题": self.subName.get(),
+            "商品短标题": self.printerName.get(),
+            "单位": self.unit.get(),
+            "关键字": self.keyword.get(),
+            "商品分类": self.classification.get(),
+            "售价": self.price.get(),
+            "原价": self.originalPrice.get(),
+            "编码": self.code.get(),
+            "条码": self.barcode.get(),
+            "库存": self.stock.get()
+        }
+        file = os.path.join(self.rootDir, 'productDetail.json')
+
+        with open(file, 'w', encoding="utf-8") as fh:
+            json.dump(product_detail, fh, ensure_ascii=False)
 
 
 class Replace_Dialogue_Window:
