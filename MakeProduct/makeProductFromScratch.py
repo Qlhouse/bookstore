@@ -183,14 +183,14 @@ class Replace_Dialogue_Window:
         tk.Button(self.replace_dialog, text="提交", command=self.replace_dialog.destroy,
                   bg="green", fg='white').grid(row=3, padx=5, pady=5)
 
-        self.replace_dialog.mainloop()
+        # self.replace_dialog.mainloop()
 
     def get_inputs(self):
         self.replace_dialog.deiconify()
         self.replace_dialog.wait_window()
-        org_chars = self.original_chars.get()
-        sub_chars = self.subtituted_chars.get()
-        return org_chars, sub_chars
+        self.org_chars = self.original_chars.get()
+        self.sub_chars = self.subtituted_chars.get()
+        return self.org_chars, self.sub_chars
 
 
 if __name__ == '__main__':
