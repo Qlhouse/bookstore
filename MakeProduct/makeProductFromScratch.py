@@ -169,9 +169,12 @@ class MainPage:
             "条码": self.barcode.get(),
             "库存": self.stock.get()
         }
-        file = os.path.join(self.rootDir, 'productDetail.json')
+        os.chdir(self.rootDir)
+        self.product_dir = os.mkdir(self.barcode.get())
+        # file = os.path.join(self.rootDir, 'productDetail.json')
+        os.chdir(self.barcode.get())
 
-        with open(file, 'w', encoding="utf-8") as fh:
+        with open('productDetail.json', 'w', encoding="utf-8") as fh:
             json.dump(product_detail, fh, ensure_ascii=False)
 
 
