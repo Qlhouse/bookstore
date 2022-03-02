@@ -120,7 +120,7 @@ class MainPage:
             row=1, column=1, padx=20, pady=20
         )
 
-        tk.Button(self.command_frame, text="拍照片", command="", bg="green", fg='white').grid(
+        tk.Button(self.command_frame, text="拍照片", command=self.take_picture, bg="green", fg='white').grid(
             row=1, column=2, padx=20, pady=20
         )
 
@@ -170,12 +170,17 @@ class MainPage:
             "库存": self.stock.get()
         }
         os.chdir(self.rootDir)
-        self.product_dir = os.mkdir(self.barcode.get())
+        os.makedirs(self.barcode.get(), exist_ok=True)
         # file = os.path.join(self.rootDir, 'productDetail.json')
         os.chdir(self.barcode.get())
+        os.makedirs("synopsisImgDir", exist_ok=True)
+        os.makedirs("detailImageDir", exist_ok=True)
 
         with open('productDetail.json', 'w', encoding="utf-8") as fh:
             json.dump(product_detail, fh, ensure_ascii=False)
+
+    def take_picture(self):
+        pass
 
 
 class Replace_Dialogue_Window:
