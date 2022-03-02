@@ -135,7 +135,8 @@ class MainPage:
     def replaceText(self):
         entryList = [self.name, self.subName,
                      self.printerName, self.keyword]
-        org_chars, sub_chars = Replace_Dialogue_Window(root).get_inputs()
+        org_chars, sub_chars = Replace_Dialogue_Window(
+            self.labelframe).get_inputs()
         print(org_chars, sub_chars)
 
         for item in entryList:
