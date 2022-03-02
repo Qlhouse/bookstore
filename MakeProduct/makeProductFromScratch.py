@@ -116,7 +116,7 @@ class MainPage:
             root, text='功能按钮', bg="sky blue", font='helvetica 14 bold')
         self.command_frame.grid(row=3, column=1, padx=30, pady=30, sticky='ew')
 
-        tk.Button(self.command_frame, text="生成产品数据", command="", bg="green", fg='white').grid(
+        tk.Button(self.command_frame, text="生成产品数据", command=self.make_product(), bg="green", fg='white').grid(
             row=1, column=1, padx=20, pady=20
         )
 
@@ -154,9 +154,21 @@ class MainPage:
 
     # [TO DO] Drop down list for 商品分类
 
-    def make_product():
+    def make_product(self):
         "Dump 'productDetail.json' "
-        pass
+        f'''{
+            "商品名称": {self.name},
+            "商品副标题": {self.subname},
+            "商品短标题": {self.printerName},
+            "单位": {self.unit},
+            "关键字": {self.keyword},
+            "商品分类": {self.classification},
+            "售价": {self.price},
+            "原价": {self.originalPrice},
+            "编码": {self.code}, 
+            "条码": {self.barcode},
+            "库存": {self.stock}
+        }'''
 
 
 class Replace_Dialogue_Window:
