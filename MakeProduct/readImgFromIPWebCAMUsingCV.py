@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 
 # Read video from website
-vcap = cv2.VideoCapture("http://192.168.2.3:8080/video")
+# vcap = cv2.VideoCapture("http://192.168.1.9:8080/video")
+vcap = cv2.VideoCapture("rtsp://192.168.1.9:8080/h264_pcm.sdp")
 
 img_counter = 0
 
@@ -24,7 +25,7 @@ while(True):
         # Press "q" to close the video window before it ends if you want
         if cv2.waitKey(22) & 0xFF == ord('q'):
             break
-        if cv2.waitKey(2) % 256 == 32:
+        if cv2.waitKey(1) % 256 == 32:
             # SPACE pressed
             img_name = f"opencv_frame_{img_counter}.png"
             cv2.imwrite(img_name, frame)
