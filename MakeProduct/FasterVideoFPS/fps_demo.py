@@ -7,7 +7,7 @@ import cv2
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-n", "--num-frames", type=int, default=100,
+ap.add_argument("-n", "--num-frames", type=int, default=1000,
                 help="Number of frames to loop over fro FPS test")
 ap.add_argument("-d", "--display", type=int, default=-1,
                 help="Whether or not frames should be displayed")
@@ -15,7 +15,8 @@ args = vars(ap.parse_args())
 
 # grab a pointer to the video stream and initialize the FPS counter
 print("[INFO] sampling frame from webcam...")
-stream = cv2.VideoCapture("rtsp://192.168.2.3:8080/h264_pcm.sdp")
+# stream = cv2.VideoCapture("rtsp://192.168.2.3:8080/h264_pcm.sdp")
+stream = cv2.VideoCapture("rtsp://192.168.1.9:8080/h264_pcm.sdp")
 fps = FPS().start()
 
 # loop over some frames
@@ -45,7 +46,8 @@ cv2.destroyAllWindows()
 # created a *thread* video stream, allow the carera sensor
 # to warmup, and start the FPS counter
 print("[INFO] sampling THREAD frames from webcam...")
-vs = WebcamVideoStream(src="rtsp://192.168.2.3:8080/h264_pcm.sdp").start()
+# vs = WebcamVideoStream(src="rtsp://192.168.2.3:8080/h264_pcm.sdp").start()
+vs = WebcamVideoStream(src="rtsp://192.168.1.9:8080/h264_pcm.sdp").start()
 fps = FPS().start()
 
 

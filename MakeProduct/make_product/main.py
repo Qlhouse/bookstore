@@ -120,7 +120,7 @@ class MainPage:
             row=1, column=1, padx=20, pady=20
         )
 
-        tk.Button(self.command_frame, text="拍照片", command=self.take_picture, bg="green", fg='white').grid(
+        tk.Button(self.command_frame, text="拍照片", command=self.take_photo, bg="green", fg='white').grid(
             row=1, column=2, padx=20, pady=20
         )
 
