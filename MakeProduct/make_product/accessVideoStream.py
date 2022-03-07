@@ -8,6 +8,13 @@ class WebcamVideoStream:
         # initialize the video camera stream and read the
         # first frame from the stream
         self.stream = cv2.VideoCapture(src)
+
+        # Using read() method to access the camera stream, returns a tuple
+        # The first value is a Boolean value representing whether
+        # a frame is captured correctly or not. With this, you can know
+        # at the end of a video capture whether all the frames are captured
+        # correctly or not.
+        # The second value is the captured frame, which is basically a numpy array.
         (self.grabbed, self.frame) = self.stream.read()
 
         # initialize the variable used to indicate if
@@ -43,16 +50,26 @@ if __name__ == '__main__':
     print("[INFO] sampling THREAD frames from webcam...")
     # vs = WebcamVideoStream(src="rtsp://192.168.2.3:8080/h264_pcm.sdp").start()
     vs = WebcamVideoStream(src="rtsp://192.168.1.9:8080/h264_pcm.sdp").start()
+    img_counter = 0
 
     while True:
         # grab the frame from the threaded video stream and resize
         # it to have a maximum width of 400 pixels
         frame = vs.read()
-        frame = imutils.resize(frame, width=400)
+        frame = imutils.resize(frame, height=600)
 
         # display the frame to our screen
         cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
+        # key = cv2.waitKey(1) & 0xFF
+        # Press "q" to close the video window before it ends if you want
+        if cv2.waitKey(22) & 0xFF == ord('q'):
+            break
+        if cv2.waitKey(1) % 256 == 32:
+            # SPACE pressed, write down current frame
+            img_name = f"opencv_frame_{img_counter}.png"
+            cv2.imwrite(img_name, frame)
+            print(f"{img_name} saved.")
+            img_counter += 1
 
     # do a bit of cleanup
     cv2.destroyAllWindows()

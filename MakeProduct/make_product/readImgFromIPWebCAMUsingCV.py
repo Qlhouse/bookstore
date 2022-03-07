@@ -26,7 +26,7 @@ while(True):
         if cv2.waitKey(22) & 0xFF == ord('q'):
             break
         if cv2.waitKey(1) % 256 == 32:
-            # SPACE pressed
+            # SPACE pressed, write down current frame
             img_name = f"opencv_frame_{img_counter}.png"
             cv2.imwrite(img_name, frame)
             print(f"{img_name} saved.")
