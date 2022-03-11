@@ -11,7 +11,7 @@ from cv2 import dnn_superres
 sr = dnn_superres.DnnSuperResImpl_create()
 
 # Read the image
-image = cv2.imread("Media/img_contour.png")
+image = cv2.imread("Media/quanpin.jpg")
 
 # Define model path, if you want to use a different model
 # then just change the path.
