@@ -1,6 +1,7 @@
 from rembg.bg import remove
 import numpy as np
 import io
+import imutils
 from PIL import Image
 import cv2
 import time
@@ -22,21 +23,14 @@ img = Image.open(io.BytesIO(result)).convert("RGBA")
 img = cv2.cvtColor(np.array(img), cv2.COLOR_RGBA2BGRA)
 cv2.imwrite('img_pil_opencv.png', img)
 
-# Resize image to specific width or height
-def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
-    dim = None
-    (h, w) = image.shape[:2]
+# Resize image
+img = imutils.convenience.resize(img, height=600)
 
-    if width is None and height is None:
-        return image
-    if width is None:
-        r = height / float(h)
-        dim = (int(w * r), height)
-    else:
-        r = width / float(w)
-        dim = (width, int(h * r))
+contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+max_contour = max(contours, key = cv2.contourArea)
+x, y, w, h = cv2.boundingRect(max_contour)
 
-    return cv2.resize(image, dim, interpolation=inter)
+# Draw contours
 
 def getContours(img, img_contour):
     """
