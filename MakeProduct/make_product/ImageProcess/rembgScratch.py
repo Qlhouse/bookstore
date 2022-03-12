@@ -80,6 +80,10 @@ while True:
     kernel = np.ones((10, 10))
     img_dilation = cv2.dilate(img_canny, kernel, iterations=1)
     
+    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    max_contour = max(contours, key = cv2.contourArea)
+    x, y, w, h = cv2.boundingRect(max_contour)
+    
     x, y, w, h = getContours(img_dilation, img_blur)
 
     cv2.imshow('img', img_blur)
