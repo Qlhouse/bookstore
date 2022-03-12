@@ -23,6 +23,9 @@ img = Image.open(io.BytesIO(result)).convert("RGBA")
 img = cv2.cvtColor(np.array(img), cv2.COLOR_RGBA2BGRA)
 cv2.imwrite('img_pil_opencv.png', img)
 
+# Find Canny edges
+# edged = cv2.Canny(gray, 30, 200)
+
 # Resize image
 img = imutils.convenience.resize(img, height=600)
 
