@@ -44,13 +44,9 @@ def getContours(img, img_contour):
     img_contour: draw contour on the image
     """
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-    object_contour, contour_size = None, 0
     # padding = 50
-
-    for cnt in contours:
-        area = cv2.contourArea(cnt)
-        if area > contour_size:
-            object_contour = cnt
+    # Find the largest contour
+    object_contour = max(contours, key = cv2.contourArea)
 
     peri = cv2.arcLength(object_contour, True)
     approx = cv2.approxPolyDP(object_contour, 0.02 * peri, True)
