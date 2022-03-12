@@ -108,5 +108,5 @@ while True:
         break
 
 
-
+# [color mode](https://holypython.com/python-pil-tutorial/color-modes-explained-for-digital-image-processing-in-python-pil/#:~:text=RGBA%20on%20the%20other%20hand%20is%20a%20color,modes%20if%20you%E2%80%99re%20working%20with%20digital%20image%20processing.)
 
