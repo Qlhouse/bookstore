@@ -41,17 +41,32 @@ def get_video_frame(video_stream):
     # cv2.imwrite("scratch.png", video_frame)
 
 
+def get_rect_bounding(img):
+    """
+    img: the input image
+    img_contour: draw contour on the image
+    """
+    contours, hierarchy = cv2.findContours(
+        img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    # Find the largest contour
+    object_contour = max(contours, key=cv2.contourArea)
+
+    # peri = cv2.arcLength(object_contour, True)
+    # approx = cv2.approxPolyDP(object_contour, 0.02 * peri, True)
+    # print(len(approx))
+    x, y, w, h = cv2.boundingRect(object_contour)
+    # cv2.rectangle(img_contour, (x, y), (x+w, y+h), (0, 255, 0), 5)
+    return x, y, w, h
+
+
 if __name__ == "__main__":
     # get_video_frame("rtsp://192.168.1.9:8080/h264_pcm.sdp")
     img = get_video_frame("rtsp://192.168.2.3:8080/h264_pcm.sdp")
     # img is opencv mode, we need to convert to pillow mode
-    img = cv2.cvtColor(img, cv2.COLOR_BGR)
+    # img = cv2.cvtColor(img, cv2.COLOR_BGR)
     cv2.imwrite("temp.png", img)
     image = Image.open("temp.png")
     # img_pil = Image.fromarray(img)
 
     img_rembg = rembg(image)
     img_rembg.save("scratch.png")
-    # img_background_removed is pillow mode, convert to opencv mode
-    # img_rembg_cv = np.asarray(img_rembg)
-    # cv2.imwrite("scratch.png", img_rembg_cv)

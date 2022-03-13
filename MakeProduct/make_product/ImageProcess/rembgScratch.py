@@ -29,34 +29,40 @@ cv2.imwrite('img_pil_opencv.png', img)
 # Resize image
 img = imutils.convenience.resize(img, height=600)
 
-contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-max_contour = max(contours, key = cv2.contourArea)
+contours, hierarchy = cv2.findContours(
+    img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+max_contour = max(contours, key=cv2.contourArea)
 x, y, w, h = cv2.boundingRect(max_contour)
 
 # Draw contours
 
-def getContours(img, img_contour):
+
+def get_rect_bounding(img, img_contour):
     """
     img: the input image
     img_contour: draw contour on the image
     """
-    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(
+        img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     # padding = 50
     # Find the largest contour
-    object_contour = max(contours, key = cv2.contourArea)
+    object_contour = max(contours, key=cv2.contourArea)
 
     peri = cv2.arcLength(object_contour, True)
     approx = cv2.approxPolyDP(object_contour, 0.02 * peri, True)
     print(len(approx))
     x, y, w, h = cv2.boundingRect(approx)
-    cv2.rectangle(img_contour, (x, y), (x+w, y+h), (0, 255, 0), 5)
+    # cv2.rectangle(img_contour, (x, y), (x+w, y+h), (0, 255, 0), 5)
     return x, y, w, h
 
     # cv2.drawContours(img_contour, object_contour, -1, (255, 0, 255), 7)
 
 # Create trackbar
+
+
 def empty(a):
     pass
+
 
 cv2.namedWindow("Parameters")
 cv2.resizeWindow("Parameters", 640, 240)
@@ -75,24 +81,25 @@ while True:
     threshold1 = cv2.getTrackbarPos("Threshold1", "Parameters")
     threshold2 = cv2.getTrackbarPos("Threshold2", "Parameters")
     img_canny = cv2.Canny(img_gray, threshold1, threshold2)
-    
+
     # Dilation function
     kernel = np.ones((10, 10))
     img_dilation = cv2.dilate(img_canny, kernel, iterations=1)
-    
-    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-    max_contour = max(contours, key = cv2.contourArea)
+
+    contours, hierarchy = cv2.findContours(
+        img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    max_contour = max(contours, key=cv2.contourArea)
     x, y, w, h = cv2.boundingRect(max_contour)
-    
-    x, y, w, h = getContours(img_dilation, img_blur)
+
+    x, y, w, h = get_rect_bounding(img_dilation, img_blur)
 
     cv2.imshow('img', img_blur)
-    
+
     # Mark corners
     # for i in corners:
-        # x, y = i.ravel()
-        # cv2.circle(img, (x, y), 3, 255, -1)
-    
+    # x, y = i.ravel()
+    # cv2.circle(img, (x, y), 3, 255, -1)
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         # Cut image
         img_cropped = img[y-padding:y+h+padding+1, x-padding:x+w+padding+1]
@@ -109,4 +116,3 @@ while True:
 
 
 # [color mode](https://holypython.com/python-pil-tutorial/color-modes-explained-for-digital-image-processing-in-python-pil/#:~:text=RGBA%20on%20the%20other%20hand%20is%20a%20color,modes%20if%20you%E2%80%99re%20working%20with%20digital%20image%20processing.)
-
