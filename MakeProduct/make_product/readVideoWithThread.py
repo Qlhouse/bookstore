@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # created a *thread* video stream, allow the carera sensor to warmup
     print("[INFO] sampling THREAD frames from webcam...")
     # vs = WebcamVideoStream(src="rtsp://192.168.2.3:8080/h264_pcm.sdp").start()
-    vs = WebcamVideoStream(src="rtsp://192.168.1.9:8080/h264_pcm.sdp").start()
+    vs = WebcamVideoStream(src="http://192.168.2.3:8080").start()
     img_counter = 0
 
     while True:
@@ -63,9 +63,9 @@ if __name__ == '__main__':
         # display the frame to our screen
         cv2.imshow("Frame", frame)
         # key = cv2.waitKey(1) & 0xFF
-        #### cv2.waitKey() method waits for the user's response through
-        #### a key press. This waitKey() method takes an argument of type
-        #### integer denoting the number of seconds to wait for the key press.
+        # cv2.waitKey() method waits for the user's response through
+        # a key press. This waitKey() method takes an argument of type
+        # integer denoting the number of seconds to wait for the key press.
         # Press "q" to close the video window before it ends if you want
         if cv2.waitKey(22) & 0xFF == ord('q'):
             break

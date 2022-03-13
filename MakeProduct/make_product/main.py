@@ -179,7 +179,7 @@ class MainPage:
         with open('productDetail.json', 'w', encoding="utf-8") as fh:
             json.dump(product_detail, fh, ensure_ascii=False)
 
-    def take_picture(self):
+    def take_photo(self):
         pass
 
 

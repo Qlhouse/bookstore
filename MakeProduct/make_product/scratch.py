@@ -1,5 +1,5 @@
 from PIL import ImageFile, Image
-from rembgV2 import rembg
+from remove_img_background import rembg
 
 
 input_path = 'removeBackground.jpg'
