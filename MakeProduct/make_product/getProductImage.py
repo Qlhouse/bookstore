@@ -76,15 +76,13 @@ def overlay_transparent():
 
 if __name__ == "__main__":
     # get_video_frame("rtsp://192.168.1.9:8080/h264_pcm.sdp")
-    # img = get_video_frame("rtsp://192.168.2.3:8080/h264_pcm.sdp")
-    # # img is opencv mode, we need to convert to pillow mode
-    # # img = cv2.cvtColor(img, cv2.COLOR_BGR)
-    # cv2.imwrite("temp.png", img)
-    # image = Image.open("temp.png")
-    # # img_pil = Image.fromarray(img)
+    img = get_video_frame("rtsp://192.168.2.3:8080/h264_pcm.sdp")
+    # img is opencv mode, we need to convert to pillow mode
+    cv2.imwrite("temp.png", img)
+    image = Image.open("temp.png")
 
-    # img_rembg = rembg(image)
-    # img_rembg.save("scratch.png")
+    img_rembg = rembg(image)
+    img_rembg.save("scratch.png")
 
     img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
 
