@@ -85,15 +85,25 @@ if __name__ == "__main__":
     img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
 
     coordinate = get_rect_bounding(img)
-    img_cropt = crop_image(img, coordinate)
+    img_crop = crop_image(img, coordinate)
 
     # Create white background image
-    white_bg = np.zeros([700, 700, 3], dtype=np.unit8)
+    bg_side = 700
+    white_bg = np.zeros([bg_side, bg_side, 4], dtype=np.uint8)
     white_bg.fill(255)
 
     # reshape background removed image
-    height, width = img.shape
-    side = "height"
+    product_img_side = 660
+    img_resize = imutils.resize(
+        img_crop, height=product_img_side) if img.shape[0] > img.shape[1] else imutils.resize(img, width=product_img_side)
+    height, width = img_resize.shape[:2]
     # Paste background removed image to white background image
+    x_offset = int((bg_side - width) / 2)
+    x_end = x_offset + width
 
-    cv2.imwrite("final_img.png", img_cropt)
+    y_offset = int((bg_side - height) / 2)
+    y_end = y_offset + height
+
+    white_bg[y_offset:y_end, x_offset:x_end] = img_resize
+
+    cv2.imwrite("final_img.png", white_bg)
