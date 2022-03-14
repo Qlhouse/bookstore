@@ -46,6 +46,8 @@ def get_rect_bounding(img):
     img: the input image
     img_contour: draw contour on the image
     """
+    # Change image color mode to gray
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     contours, hierarchy = cv2.findContours(
         img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     # Find the largest contour
@@ -59,14 +61,27 @@ def get_rect_bounding(img):
     return x, y, w, h
 
 
+def crop_image(image, coordinate, padding=40):
+    x, y, w, h = coordinate
+    img_croped = image[y-padding:y+h+padding+1, x-padding:x+w+padding+1]
+    return img_croped
+
+
 if __name__ == "__main__":
     # get_video_frame("rtsp://192.168.1.9:8080/h264_pcm.sdp")
-    img = get_video_frame("rtsp://192.168.2.3:8080/h264_pcm.sdp")
-    # img is opencv mode, we need to convert to pillow mode
-    # img = cv2.cvtColor(img, cv2.COLOR_BGR)
-    cv2.imwrite("temp.png", img)
-    image = Image.open("temp.png")
-    # img_pil = Image.fromarray(img)
+    # img = get_video_frame("rtsp://192.168.2.3:8080/h264_pcm.sdp")
+    # # img is opencv mode, we need to convert to pillow mode
+    # # img = cv2.cvtColor(img, cv2.COLOR_BGR)
+    # cv2.imwrite("temp.png", img)
+    # image = Image.open("temp.png")
+    # # img_pil = Image.fromarray(img)
 
-    img_rembg = rembg(image)
-    img_rembg.save("scratch.png")
+    # img_rembg = rembg(image)
+    # img_rembg.save("scratch.png")
+
+    img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
+
+    coordinate = get_rect_bounding(img)
+    img_cropt = crop_image(img, coordinate, padding=10)
+
+    cv2.imwrite("final_img.png", img_cropt)
