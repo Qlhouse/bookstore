@@ -20,4 +20,8 @@ img = cv2.imread('Media/afterRmBg2.png',
 # A transparent image has four channels —— 3 for color, and one
 # for transparency. These images can be read in OpenCV using
 # the IMREAD_UNCHANGED flag
+
+# PNG images usually have four channels. Three color channels for
+# red, green and blue, and the fourth channel is for transparency,
+# also called alpha channel.
 img = cv2.imread('Media/afterRmBg2.png', cv2.IMREAD_UNCHANGED)

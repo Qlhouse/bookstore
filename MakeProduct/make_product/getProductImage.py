@@ -61,10 +61,14 @@ def get_rect_bounding(img):
     return x, y, w, h
 
 
-def crop_image(image, coordinate, padding=40):
+def crop_image(image, coordinate):
     x, y, w, h = coordinate
-    img_croped = image[y-padding:y+h+padding+1, x-padding:x+w+padding+1]
+    img_croped = image[y:y+h+1, x:x+w+1]
     return img_croped
+
+
+def overlay_transparent():
+    pass
 
 # Refer
 # [cv2-threshold](https://pyimagesearch.com/2021/04/28/opencv-thresholding-cv2-threshold/)
@@ -103,6 +107,8 @@ if __name__ == "__main__":
 
     y_offset = int((bg_side - height) / 2)
     y_end = y_offset + height
+
+    # img_resize = cv2.cvtColor(img_resize, cv2.COLOR_BGRA2BGR)
 
     white_bg[y_offset:y_end, x_offset:x_end] = img_resize
 
