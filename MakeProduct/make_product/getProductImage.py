@@ -66,6 +66,9 @@ def crop_image(image, coordinate, padding=40):
     img_croped = image[y-padding:y+h+padding+1, x-padding:x+w+padding+1]
     return img_croped
 
+# Refer
+# [cv2-threshold](https://pyimagesearch.com/2021/04/28/opencv-thresholding-cv2-threshold/)
+# [blending-and-pasting-images](https://datahacker.rs/012-blending-and-pasting-images-using-opencv/)
 
 if __name__ == "__main__":
     # get_video_frame("rtsp://192.168.1.9:8080/h264_pcm.sdp")
@@ -82,6 +85,15 @@ if __name__ == "__main__":
     img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
 
     coordinate = get_rect_bounding(img)
-    img_cropt = crop_image(img, coordinate, padding=10)
+    img_cropt = crop_image(img, coordinate)
+
+    # Create white background image
+    white_bg = np.zeros([700, 700, 3], dtype=np.unit8)
+    white_bg.fill(255)
+
+    # reshape background removed image
+    height, width = img.shape
+    side = "height"
+    # Paste background removed image to white background image
 
     cv2.imwrite("final_img.png", img_cropt)
