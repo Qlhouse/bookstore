@@ -2,6 +2,8 @@ import tkinter as tk
 import os
 import json
 from tkinter.filedialog import askdirectory
+from getProductImage import take_photo
+from PIL import ImageTk, Image
 
 
 class MainPage:
@@ -80,6 +82,8 @@ class MainPage:
         self.classification = tk.StringVar()
         tk.Entry(self.labelframe, textvariable=self.classification, width=50).grid(
             row=7, column=2, sticky=tk.W, padx=5, pady=7)
+        # TODO Create a drop down menu for choose classification,
+        # we need to binding dropdown menus and combo boxes
 
         tk.Label(self.labelframe, text='售价:', bg='green', fg='white').grid(
             row=8, column=1, sticky=tk.W, padx=15, pady=7)
@@ -122,6 +126,8 @@ class MainPage:
 
         tk.Button(self.command_frame, text="拍照片", command=self.take_photo, bg="green", fg='white').grid(
             row=1, column=2, padx=20, pady=20
+            # TODO open up a window, show the picture we get, if satisfy with the image,
+            # write down the image to specified directory, otherwise ask to get new picture
         )
 
         tk.Button(self.command_frame, text="移动简介图", command="", bg="green", fg='white').grid(
@@ -137,7 +143,7 @@ class MainPage:
                      self.printerName, self.keyword]
         org_chars, sub_chars = Replace_Dialogue_Window(
             self.labelframe).get_inputs()
-        print(org_chars, sub_chars)
+        # print(org_chars, sub_chars)
 
         for item in entryList:
             text = item.get()
@@ -180,7 +186,19 @@ class MainPage:
             json.dump(product_detail, fh, ensure_ascii=False)
 
     def take_photo(self):
+        videoStream = "rtsp://192.168.2.3:8080/h264_pcm.sdp"
+        while True:
+            image = take_photo(videoStream)
+            # View product image
+            View_Image.view_image()
+
+
+class View_Image:
+    def __init__(self) -> None:
         pass
+
+    def view_image():
+        image = ImageTk.PhotoImage(Image.open("img_path"))
 
 
 class Replace_Dialogue_Window:
@@ -209,6 +227,7 @@ class Replace_Dialogue_Window:
 
         # self.replace_dialog.mainloop()
 
+    # return texts for searched string and subtituded string
     def get_inputs(self):
         self.replace_dialog.deiconify()
         self.replace_dialog.wait_window()
