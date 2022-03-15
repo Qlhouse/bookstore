@@ -107,6 +107,8 @@ def get_rect_bounding(img):
 
 
 def crop_image(image, coordinate):
+    # 裁剪后只剩下3条色道，透明色道没了
+    # [TODO] How to crop PNG image
     x, y, w, h = coordinate
     img_croped = image[y:y+h+1, x:x+w+1]
     return img_croped
@@ -115,25 +117,58 @@ def crop_image(image, coordinate):
 def overlay_transparent():
     pass
 
+
+def cv2pillow(image):
+    """Input opencv mode image, return pillow mode image"""
+    # img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
+
+    if image.shape[2] == 4:
+        # You may need to convert the color.
+        img_rgba = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)
+        img_rgba[:, :, 3] = image[:, :, 3]
+        img_pil = Image.fromarray(img_rgba)
+    elif image.shape[2] == 3:
+        # You may need to convert the color.
+        img_rgba = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        img_pil = Image.fromarray(img_rgba)
+
+    return img_pil
+    # img_pil.save("openct2PIL.png")
+
+
+def pillow2cv(image):
+    """Input pillow mode image, return opencv mode image"""
+    # img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
+
+    img_opencv = cv2.cvtColor(np.array(image), cv2.COLOR_RGBA2BGRA)
+
+    return img_opencv
+    # cv2.imwrite("img_opencv", img_opencv)
+    # img_pil.save("openct2PIL.png")
+
+
 # Refer
 # [cv2-threshold](https://pyimagesearch.com/2021/04/28/opencv-thresholding-cv2-threshold/)
 # [blending-and-pasting-images](https://datahacker.rs/012-blending-and-pasting-images-using-opencv/)
 
 
 def take_photo(videoStream):
+    # def take_photo():
     # get_video_frame("rtsp://192.168.1.9:8080/h264_pcm.sdp")
     img = get_video_frame(video_stream=videoStream)
+    # img = cv2.imread("temp.png", cv2.IMREAD_UNCHANGED)
     # img is opencv mode, we need to convert to pillow mode
-    cv2.imwrite("temp.png", img)
-    image = Image.open("temp.png")
+    # cv2.imwrite("temp.png", img)
+    # image = Image.open("temp.png")
+    img_pillow = cv2pillow(img)
 
-    img_rembg = rembg(image)
-    img_rembg.save("scratch.png")
+    img_rembg = rembg(img_pillow)
 
-    img = cv2.imread("scratch.png", cv2.IMREAD_UNCHANGED)
-
-    coordinate = get_rect_bounding(img)
-    img_crop = crop_image(img, coordinate)
+    img_cv = pillow2cv(img_rembg)
+    # print("image img_cv's shape: ", img_cv.shape)
+    coordinate = get_rect_bounding(img_cv)
+    img_crop = crop_image(img_cv, coordinate)
+    print("image img_crop's shape: ", img_crop.shape)
 
     # Initialize the final image
     bg_side = 700
@@ -146,6 +181,7 @@ def take_photo(videoStream):
         img_crop, height=product_img_side) if img.shape[0] > img.shape[1] else \
         imutils.resize(img_crop, width=product_img_side)
 
+    print("image img_resize's shape: ", img_resize.shape)
     # Paste background removed image to white background image
     height, width = img_resize.shape[:2]
     x_offset = int((bg_side - width) / 2)
@@ -155,10 +191,6 @@ def take_photo(videoStream):
     y_end = y_offset + height
 
     final_img[y_offset:y_end, x_offset:x_end] = img_resize
-
-    # # Delete temperate file: "temp.png", "scratch.png"
-    # os.remove("temp.png")
-    # os.remove("scratch.png")
 
     return final_img
 
