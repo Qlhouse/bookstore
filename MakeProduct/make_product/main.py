@@ -142,7 +142,7 @@ class MainPage:
         entryList = [self.name, self.subName,
                      self.printerName, self.keyword]
         org_chars, sub_chars = Replace_Dialogue_Window(
-            self.labelframe).get_inputs()
+            self.labelframe)    #.get_inputs()
         # print(org_chars, sub_chars)
 
         for item in entryList:
@@ -201,38 +201,39 @@ class View_Image:
         image = ImageTk.PhotoImage(Image.open("img_path"))
 
 
-class Replace_Dialogue_Window:
+class Replace_Dialogue_Window(tk.Toplevel):
 
-    def __init__(self, root):
-        # self.root = root
+    def __init__(self, parent):
+        tk.Toplevel.__init__(self, parent)
+        self.parent = parent
         self.create_gui()
 
     def create_gui(self):
-        self.replace_dialog = tk.Toplevel(root)
+        # self.replace_dialog = tk.Toplevel(root)
 
-        tk.Label(self.replace_dialog, text='查找:', bg='green', fg='white').grid(
+        tk.Label(self, text='查找:', bg='green', fg='white').grid(
             row=1, column=1, sticky=tk.W, padx=15, pady=15)
-        self.original_chars = tk.StringVar(self.replace_dialog)
-        tk.Entry(self.replace_dialog, textvariable=self.original_chars, width=30).grid(
+        self.original_chars = tk.StringVar(self)
+        tk.Entry(self, textvariable=self.original_chars, width=30).grid(
             row=1, column=2, sticky=tk.W, padx=5, pady=15)
 
-        tk.Label(self.replace_dialog, text='替换:', bg='green', fg='white').grid(
+        tk.Label(self, text='替换:', bg='green', fg='white').grid(
             row=2, column=1, sticky=tk.W, padx=15, pady=15)
-        self.subtituted_chars = tk.StringVar(self.replace_dialog)
-        tk.Entry(self.replace_dialog, textvariable=self.subtituted_chars, width=30).grid(
+        self.subtituted_chars = tk.StringVar(self)
+        tk.Entry(self, textvariable=self.subtituted_chars, width=30).grid(
             row=2, column=2, sticky=tk.W, padx=5, pady=15)
 
-        tk.Button(self.replace_dialog, text="提交", command=self.replace_dialog.destroy,
-                  bg="green", fg='white').grid(row=3, padx=5, pady=5)
+        tk.Button(self, text="提交", command=self.get_inputs, bg="green", fg='white').grid(row=3, padx=5, pady=5)
 
         # self.replace_dialog.mainloop()
 
     # return texts for searched string and subtituded string
     def get_inputs(self):
-        self.replace_dialog.deiconify()
-        self.replace_dialog.wait_window()
+        self.deiconify()
+        self.wait_window()
         self.org_chars = self.original_chars.get()
         self.sub_chars = self.subtituted_chars.get()
+        # self.destroy()
         return self.org_chars, self.sub_chars
 
 
